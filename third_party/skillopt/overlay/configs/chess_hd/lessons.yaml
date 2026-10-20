@@ -1,0 +1,18 @@
+# default.yaml for one epoch, with the analyst reading pre-generated D-Skill lessons
+# (lesson_analysis) instead of trajectories; see skillopt/envs/chess_hd/lesson_adapter.py.
+_base_: default.yaml
+train:
+  num_epochs: 1          # one epoch = 3 steps of 20 train puzzles
+gradient:
+  minibatch_size: 8
+  analyst_workers: 4
+optimizer:
+  learning_rate: 4
+  lr_scheduler: constant   # cosine over 3 steps would cut the budgets to 4/2/2
+env:
+  name: chess_hd_lessons
+  lesson_analysis: runs/cqHQ3T/analysis       # relative to DSKILL_ROOT
+  student_results: runs/puzzles_qwen3.6-35b-a3b_qwtrT_tr100/results.jsonl
+  error_prompt: analyst_error_lessons.md
+  success_prompt: analyst_success_lessons.md
+  lesson_pool: labels    # failed puzzles -> their gap lessons; solved puzzles -> their keep lessons

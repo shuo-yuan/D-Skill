@@ -1,0 +1,28 @@
+# D-Skill dependencies, pinned to the versions used for the paper (Python 3.11).
+# The Sonnet/Haiku and Terra rows also used the Claude Code (`claude`) and Codex (`codex`) CLIs
+# through dskill.llm.claude_proxy and dskill.llm.codex_proxy.
+
+# Core: analyst, consolidator, LLM client, SpreadsheetBench harness, Trace2Skill baseline
+openai==2.45.0
+openpyxl==3.1.5
+tqdm==4.70.0
+diskcache==5.6.3
+PyYAML==6.0.3
+
+# Imported by the SpreadsheetBench agent's own scripts (it runs `python3` from PATH)
+pandas==3.0.3
+xlrd==2.0.2
+XlsxWriter==3.2.9
+
+# ALFWorld (also set ALFWORLD_DATA; see the README)
+alfworld==0.4.2
+gymnasium==1.3.0
+numpy==2.4.6
+omegaconf==2.3.1
+
+# Chess puzzles
+chess==1.11.2
+
+# SFT comparison (dskill.sft, dskill.llm.tinker_proxy)
+tinker==0.27.1
+wandb==0.28.1

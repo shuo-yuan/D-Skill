@@ -1,0 +1,9 @@
+{
+ "source": "puzzles_train_cc100.json",
+ "split": "stratified by band 12/8 per band, seed 42",
+ "counts": {
+  "train": 60,
+  "val": 40,
+  "test": 200
+ }
+}

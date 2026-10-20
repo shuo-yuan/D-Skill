@@ -1,0 +1,81 @@
+path	table	cell
+table1_main/spreadsheetbench/deepseek_to_qwen/r1/xlsx/SKILL.md	1a	SSB, DeepSeek-V4-Pro -> Qwen3.6-35B-A3B
+table1_main/spreadsheetbench/deepseek_to_qwen/r2/xlsx/SKILL.md	1a	SSB, DeepSeek-V4-Pro -> Qwen3.6-35B-A3B
+table1_main/spreadsheetbench/deepseek_to_qwen/r3/xlsx/SKILL.md	1a	SSB, DeepSeek-V4-Pro -> Qwen3.6-35B-A3B
+table1_main/spreadsheetbench/deepseek_to_luna/r1/xlsx/SKILL.md	1a	SSB, DeepSeek-V4-Pro -> GPT-5.6 Luna
+table1_main/spreadsheetbench/deepseek_to_luna/r2/xlsx/SKILL.md	1a	SSB, DeepSeek-V4-Pro -> GPT-5.6 Luna
+table1_main/spreadsheetbench/deepseek_to_luna/r3/xlsx/SKILL.md	1a	SSB, DeepSeek-V4-Pro -> GPT-5.6 Luna
+table1_main/spreadsheetbench/terra_to_qwen/r1/xlsx/SKILL.md	1a	SSB, GPT-5.6 Terra -> Qwen3.6-35B-A3B
+table1_main/spreadsheetbench/terra_to_qwen/r2/xlsx/SKILL.md	1a	SSB, GPT-5.6 Terra -> Qwen3.6-35B-A3B
+table1_main/spreadsheetbench/terra_to_qwen/r3/xlsx/SKILL.md	1a	SSB, GPT-5.6 Terra -> Qwen3.6-35B-A3B
+table1_main/spreadsheetbench/terra_to_luna/r1/xlsx/SKILL.md	1a	SSB, GPT-5.6 Terra -> GPT-5.6 Luna
+table1_main/spreadsheetbench/terra_to_luna/r2/xlsx/SKILL.md	1a	SSB, GPT-5.6 Terra -> GPT-5.6 Luna
+table1_main/spreadsheetbench/terra_to_luna/r3/xlsx/SKILL.md	1a	SSB, GPT-5.6 Terra -> GPT-5.6 Luna
+table1_main/alfworld/deepseek_to_qwen/r1/alf/SKILL.md	1a	ALFWorld, DeepSeek-V4-Pro -> Qwen3.6-35B-A3B
+table1_main/alfworld/deepseek_to_qwen/r2/alf/SKILL.md	1a	ALFWorld, DeepSeek-V4-Pro -> Qwen3.6-35B-A3B
+table1_main/alfworld/deepseek_to_qwen/r3/alf/SKILL.md	1a	ALFWorld, DeepSeek-V4-Pro -> Qwen3.6-35B-A3B
+table1_main/alfworld/deepseek_to_luna/r1/alf/SKILL.md	1a	ALFWorld, DeepSeek-V4-Pro -> GPT-5.6 Luna
+table1_main/alfworld/deepseek_to_luna/r2/alf/SKILL.md	1a	ALFWorld, DeepSeek-V4-Pro -> GPT-5.6 Luna
+table1_main/alfworld/deepseek_to_luna/r3/alf/SKILL.md	1a	ALFWorld, DeepSeek-V4-Pro -> GPT-5.6 Luna
+table1_main/alfworld/terra_to_qwen/r1/alf/SKILL.md	1a	ALFWorld, GPT-5.6 Terra -> Qwen3.6-35B-A3B
+table1_main/alfworld/terra_to_qwen/r2/alf/SKILL.md	1a	ALFWorld, GPT-5.6 Terra -> Qwen3.6-35B-A3B
+table1_main/alfworld/terra_to_qwen/r3/alf/SKILL.md	1a	ALFWorld, GPT-5.6 Terra -> Qwen3.6-35B-A3B
+table1_main/alfworld/terra_to_luna/r1/alf/SKILL.md	1a	ALFWorld, GPT-5.6 Terra -> GPT-5.6 Luna
+table1_main/alfworld/terra_to_luna/r2/alf/SKILL.md	1a	ALFWorld, GPT-5.6 Terra -> GPT-5.6 Luna
+table1_main/alfworld/terra_to_luna/r3/alf/SKILL.md	1a	ALFWorld, GPT-5.6 Terra -> GPT-5.6 Luna
+table1_main/chess/haiku_to_qwen/r1/chess/SKILL.md	1b	Chess, Claude Haiku 4.5 -> Qwen3.6-35B-A3B
+table1_main/chess/haiku_to_qwen/r2/chess/SKILL.md	1b	Chess, Claude Haiku 4.5 -> Qwen3.6-35B-A3B
+table1_main/chess/haiku_to_qwen/r3/chess/SKILL.md	1b	Chess, Claude Haiku 4.5 -> Qwen3.6-35B-A3B
+table1_main/chess/sonnet_to_haiku/r1/chess/SKILL.md	1b	Chess, Claude Sonnet 5 -> Claude Haiku 4.5
+table1_main/chess/sonnet_to_haiku/r2/chess/SKILL.md	1b	Chess, Claude Sonnet 5 -> Claude Haiku 4.5
+table1_main/chess/sonnet_to_haiku/r3/chess/SKILL.md	1b	Chess, Claude Sonnet 5 -> Claude Haiku 4.5
+table2_trace_source/teacher_only/r1/xlsx/SKILL.md	2	SSB, teacher trace only (same docs for both students)
+table2_trace_source/teacher_only/r2/xlsx/SKILL.md	2	SSB, teacher trace only (same docs for both students)
+table2_trace_source/teacher_only/r3/xlsx/SKILL.md	2	SSB, teacher trace only (same docs for both students)
+table2_trace_source/student_only_qwen/r1/xlsx/SKILL.md	2	SSB, student trace only, Qwen student
+table2_trace_source/student_only_qwen/r2/xlsx/SKILL.md	2	SSB, student trace only, Qwen student
+table2_trace_source/student_only_qwen/r3/xlsx/SKILL.md	2	SSB, student trace only, Qwen student
+table2_trace_source/student_only_luna/r1/xlsx/SKILL.md	2	SSB, student trace only, Luna student
+table2_trace_source/student_only_luna/r2/xlsx/SKILL.md	2	SSB, student trace only, Luna student
+table2_trace_source/student_only_luna/r3/xlsx/SKILL.md	2	SSB, student trace only, Luna student
+table3_analyst_consolidator/sonnet_analyst_qwen_consolidator/r1/chess/SKILL.md	3	Chess Haiku->Qwen, Sonnet analyst + Qwen consolidator (sq)
+table3_analyst_consolidator/sonnet_analyst_qwen_consolidator/r2/chess/SKILL.md	3	Chess Haiku->Qwen, Sonnet analyst + Qwen consolidator (sq)
+table3_analyst_consolidator/sonnet_analyst_qwen_consolidator/r3/chess/SKILL.md	3	Chess Haiku->Qwen, Sonnet analyst + Qwen consolidator (sq)
+table3_analyst_consolidator/qwen_analyst_sonnet_consolidator/r1/chess/SKILL.md	3	Chess Haiku->Qwen, Qwen analyst + Sonnet consolidator (qs)
+table3_analyst_consolidator/qwen_analyst_sonnet_consolidator/r2/chess/SKILL.md	3	Chess Haiku->Qwen, Qwen analyst + Sonnet consolidator (qs)
+table3_analyst_consolidator/qwen_analyst_sonnet_consolidator/r3/chess/SKILL.md	3	Chess Haiku->Qwen, Qwen analyst + Sonnet consolidator (qs)
+table3_analyst_consolidator/qwen_analyst_qwen_consolidator/r1/chess/SKILL.md	3	Chess Haiku->Qwen, Qwen analyst + Qwen consolidator (qq)
+table3_analyst_consolidator/qwen_analyst_qwen_consolidator/r2/chess/SKILL.md	3	Chess Haiku->Qwen, Qwen analyst + Qwen consolidator (qq)
+table3_analyst_consolidator/qwen_analyst_qwen_consolidator/r3/chess/SKILL.md	3	Chess Haiku->Qwen, Qwen analyst + Qwen consolidator (qq)
+table4_skillopt_chess/skillopt/s42/chess/SKILL.md	4	Chess Haiku->Qwen, SkillOpt (epoch-1 skill_v0003)
+table4_skillopt_chess/skillopt/s43/chess/SKILL.md	4	Chess Haiku->Qwen, SkillOpt (epoch-1 skill_v0003)
+table4_skillopt_chess/skillopt/s44/chess/SKILL.md	4	Chess Haiku->Qwen, SkillOpt (epoch-1 skill_v0003)
+table4_skillopt_chess/dskill_lessons_skillopt_backend/s42/chess/SKILL.md	4	Chess Haiku->Qwen, D-Skill lessons + SkillOpt backend
+table4_skillopt_chess/dskill_lessons_skillopt_backend/s43/chess/SKILL.md	4	Chess Haiku->Qwen, D-Skill lessons + SkillOpt backend
+table4_skillopt_chess/dskill_lessons_skillopt_backend/s44/chess/SKILL.md	4	Chess Haiku->Qwen, D-Skill lessons + SkillOpt backend
+table5_trace2skill/self_authored_qwen/s42/xlsx/SKILL.md	5	SSB, Trace2Skill self-authored, Qwen
+table5_trace2skill/self_authored_qwen/s43/xlsx/SKILL.md	5	SSB, Trace2Skill self-authored, Qwen
+table5_trace2skill/self_authored_qwen/s44/xlsx/SKILL.md	5	SSB, Trace2Skill self-authored, Qwen
+table5_trace2skill/self_authored_luna/s42/xlsx/SKILL.md	5	SSB, Trace2Skill self-authored, Luna
+table5_trace2skill/self_authored_luna/s43/xlsx/SKILL.md	5	SSB, Trace2Skill self-authored, Luna
+table5_trace2skill/self_authored_luna/s44/xlsx/SKILL.md	5	SSB, Trace2Skill self-authored, Luna
+table5_trace2skill/cross_model/s42/xlsx/SKILL.md	5	SSB, Trace2Skill cross-model (DeepSeek traces + writer; same docs for both students)
+table5_trace2skill/cross_model/s43/xlsx/SKILL.md	5	SSB, Trace2Skill cross-model (DeepSeek traces + writer; same docs for both students)
+table5_trace2skill/cross_model/s44/xlsx/SKILL.md	5	SSB, Trace2Skill cross-model (DeepSeek traces + writer; same docs for both students)
+table5_trace2skill/writer_swap_qwen/s42/xlsx/SKILL.md	5	SSB, Trace2Skill writer swap (DeepSeek writer), Qwen
+table5_trace2skill/writer_swap_qwen/s43/xlsx/SKILL.md	5	SSB, Trace2Skill writer swap (DeepSeek writer), Qwen
+table5_trace2skill/writer_swap_qwen/s44/xlsx/SKILL.md	5	SSB, Trace2Skill writer swap (DeepSeek writer), Qwen
+table5_trace2skill/writer_swap_luna/s42/xlsx/SKILL.md	5	SSB, Trace2Skill writer swap (DeepSeek writer), Luna
+table5_trace2skill/writer_swap_luna/s43/xlsx/SKILL.md	5	SSB, Trace2Skill writer swap (DeepSeek writer), Luna
+table5_trace2skill/writer_swap_luna/s44/xlsx/SKILL.md	5	SSB, Trace2Skill writer swap (DeepSeek writer), Luna
+figure3_curves/spreadsheetbench_deepseek_to_qwen_r3/chunk03/xlsx/SKILL.md	Fig 3a	SSB DeepSeek->Qwen doc r3 after k of 20 chunks
+figure3_curves/spreadsheetbench_deepseek_to_qwen_r3/chunk07/xlsx/SKILL.md	Fig 3a	SSB DeepSeek->Qwen doc r3 after k of 20 chunks
+figure3_curves/spreadsheetbench_deepseek_to_qwen_r3/chunk12/xlsx/SKILL.md	Fig 3a	SSB DeepSeek->Qwen doc r3 after k of 20 chunks
+figure3_curves/spreadsheetbench_deepseek_to_qwen_r3/chunk16/xlsx/SKILL.md	Fig 3a	SSB DeepSeek->Qwen doc r3 after k of 20 chunks
+figure3_curves/spreadsheetbench_deepseek_to_qwen_r3/chunk20/xlsx/SKILL.md	Fig 3a	SSB DeepSeek->Qwen doc r3 after k of 20 chunks
+figure3_curves/alfworld_deepseek_to_qwen_r2/chunk1/alf/SKILL.md	Fig 3b	ALFWorld DeepSeek->Qwen doc r2 after k of 6 chunks
+figure3_curves/alfworld_deepseek_to_qwen_r2/chunk2/alf/SKILL.md	Fig 3b	ALFWorld DeepSeek->Qwen doc r2 after k of 6 chunks
+figure3_curves/alfworld_deepseek_to_qwen_r2/chunk3/alf/SKILL.md	Fig 3b	ALFWorld DeepSeek->Qwen doc r2 after k of 6 chunks
+figure3_curves/alfworld_deepseek_to_qwen_r2/chunk4/alf/SKILL.md	Fig 3b	ALFWorld DeepSeek->Qwen doc r2 after k of 6 chunks
+figure3_curves/alfworld_deepseek_to_qwen_r2/chunk5/alf/SKILL.md	Fig 3b	ALFWorld DeepSeek->Qwen doc r2 after k of 6 chunks
+figure3_curves/alfworld_deepseek_to_qwen_r2/chunk6/alf/SKILL.md	Fig 3b	ALFWorld DeepSeek->Qwen doc r2 after k of 6 chunks

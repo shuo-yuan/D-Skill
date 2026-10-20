@@ -1,0 +1,21 @@
+diff --git a/scripts/train.py b/scripts/train.py
+index 2b410c5..8f9ffa6 100644
+--- a/scripts/train.py
++++ b/scripts/train.py
+@@ -70,6 +70,16 @@ def _register_builtins() -> None:
+         _ENV_REGISTRY["spreadsheetbench"] = SpreadsheetBenchAdapter
+     except ImportError:
+         pass
++    try:
++        from skillopt.envs.chess_hd.adapter import ChessHDAdapter
++        _ENV_REGISTRY["chess_hd"] = ChessHDAdapter
++    except ImportError:
++        pass
++    try:
++        from skillopt.envs.chess_hd.lesson_adapter import ChessLessonAdapter
++        _ENV_REGISTRY["chess_hd_lessons"] = ChessLessonAdapter
++    except ImportError:
++        pass
+     try:
+         from skillopt.envs.mmrb.adapter import MMRBAdapter
+         _ENV_REGISTRY["mmrb"] = MMRBAdapter

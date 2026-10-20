@@ -1,0 +1,6 @@
+# lessons.yaml with the edit budget raised from 4 to 12. optimizer.learning_rate sets both
+# the analyst's per-minibatch edit cap and the per-step SELECT budget.
+_base_: lessons.yaml
+optimizer:
+  learning_rate: 12
+  lr_scheduler: constant

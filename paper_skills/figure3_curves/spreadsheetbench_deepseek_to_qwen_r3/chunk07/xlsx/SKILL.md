@@ -1,0 +1,117 @@
+---
+name: xlsx
+description: "Spreadsheet manipulation skills distilled from execution experience."
+---
+
+## Core Workflow
+
+
+After gathering enough information to understand the task (sheet structure, data patterns, target ranges), immediately transition to writing the output file. Do not continue exploration beyond what is needed to inform the write phase. Always produce a concrete output file at the required path.
+
+- Always reuse the input workbook as the basis for the output file. Load it with `openpyxl.load_workbook(input_path)`, locate the target sheet (or create it if absent), modify only the required cells/ranges, and save to the output path. Never create a new workbook from scratch (`Workbook()`) unless the task explicitly requires a blank file — doing so discards other sheets, formatting, and metadata present in the original. After saving, verify that other sheets remain intact by printing `wb.sheetnames`.
+
+- After any inspection that confirms the task logic, your next action must be a single script that loads the workbook, applies all required changes, and saves to the exact output path. Do not split inspection and writing into separate turn sequences that risk never reaching the save step. Before declaring TASK_COMPLETE, confirm that `os.path.exists(output_path)` returns True.
+
+- **Script delivery**: Write the entire solution script in one shot using a heredoc: `cat <<'EOF' > script.py` followed by the full script content, then `EOF` and execute with `&& python script.py` in the same shell command. Never build scripts incrementally with multiple `echo` appends across separate turns — this fragments the workflow and multiplies parsing failures. One file, one turn.
+
+
+- **Checkpoint Rule**: After completing inspection (printing all sheets, all data, all target ranges), you MUST write and execute a solution script in the NEXT turn. Do not continue inspecting beyond this point. If you find yourself about to run a third inspection command without having written any output, STOP — you are stuck in an inspection loop. Immediately write the solution script using the heredoc pattern described above, execute it, and verify the output file exists with `ls -la <output_path>` before any further actions.
+## Inspection
+
+
+- Print the **entire** dataset (all rows, all columns) at the start of every task before designing any logic. This reveals headers, data types, grouping dimensions, non-contiguous layouts, and edge cases that affect the solution. Print the name, dimensions, and ALL cell values for every sheet in the workbook before writing any code. Do not skip sheets even if they appear empty or irrelevant. If an output sheet already contains data or formatting, treat it as a template—decide explicitly what to preserve versus overwrite.
+
+- Before any transformation, inspect ALL sheets in the workbook, especially sheets named "After," "Expected," or "Target." If such a sheet exists, treat it as a worked example defining the intended output. Load and print the contents of any example sheet. Reconcile your understanding of the task against what that sheet actually shows before writing code.
+- Dump the **entire** target data range in one pass before deciding on a write strategy. Sampling only the first/last N rows hides repeating sub-headers, blank separators, and duplicate patterns that affect the transformation logic.
+- Before modifying any cell, inspect its current state using `print()` or direct attribute access. Check value, fill, font, alignment, and number_format of at least one cell per target column. Example: `print(f'Cell {cell.coordinate}: value={cell.value!r}, fill.start_color={cell.fill.start_color.rgb!r}')`
+
+- Before writing to a column identified by letter (e.g., BN), confirm its numeric index. Read the header row and search for the column letter, or use `openpyxl.utils.get_column_letter()` to map indices. Never assume a column letter maps to a small index — letters like BN correspond to high indices (e.g., 66). Print the mapping for all target columns before writing.
+- When grouping or aggregating, inspect ALL columns that partition the data (e.g., employee numbers, regions, categories) not just the obvious one (e.g., week). Use a tuple of all partitioning columns as the grouping key. After building grouped structures, print the keys alongside their aggregated values to verify correct segmentation.
+- After dumping the data, use the detected dimensions (`ws.max_row`, `ws.max_column`) or `ws.iter_rows()` with no arguments to define iteration ranges. Never hardcode cell ranges (e.g., `A1:A4`) based on assumptions or partial snippets — always derive ranges from actual workbook inspection.
+- After loading the workbook, print the coordinate, `repr(value)`, type name, and `number_format` for every cell in the target range. Example: `for row in ws.iter_rows(min_row=1, max_row=ws.max_row, max_col=ws.max_column): for cell in row: print(f'{cell.coordinate}: {repr(cell.value)} ({type(cell.value).__name__}), format={cell.number_format}')` This reveals mixed data types (e.g., datetime objects vs. ISO strings) that would otherwise cause incorrect transformations.
+
+- Read exact sheet names from `wb.sheetnames` before accessing any sheet. Never rely on sheet names from the task instruction — they may differ in capitalization, spacing, or spelling. Use the names exactly as returned by `wb.sheetnames`.
+  **DO NOT** access a sheet by a name from the task instruction without first printing `wb.sheetnames` and using the exact name found there. Task instructions frequently misname sheets (e.g., 'Import Data' vs. actual 'Imported Data'). Always print the list, then use the matching name.
+- Before modifying a target cell, inspect its full context: (a) the cell's current formula/value and `number_format`; (b) all cells referenced in its formula, including edge cases (e.g., the upper bound of a MAX range); (c) any cells affecting conditional logic (e.g., the IF condition). Use multiple exploration passes if needed. After changes, verify the number_format is preserved and surrounding cells are undisturbed.
+
+- Print cell values, fonts, and fills together in one pass before any modifications. Example: `for row in ws.iter_rows(min_row=1, max_row=ws.max_row, max_col=ws.max_column): for cell in row: print(f'{cell.coordinate}: value={cell.value!r}, font={cell.font.name!r}, fill={cell.fill.start_color.rgb!r}')` This reveals header styling, existing formatting, and data layout in a single inspection step.
+
+- After dumping all input data, explicitly confirm the data patterns, gaps, and example values match your understanding of the task before writing any code. If an example output sheet exists, reconcile your logic against it at this stage.
+
+- After printing the header row, explicitly print the column letter and its numeric index for every target column. Example: `for col_idx, header in enumerate(headers, 1): print(f'Col {get_column_letter(col_idx)} (idx {col_idx}): {header}')` This prevents misidentifying column positions when task instructions reference letters like Q, BN, or AZ.
+
+- Print merged cell ranges using `ws.merged_cells.ranges` before any modifications. Merged cells affect how data is read and written — values exist only in the top-left cell of each merged range.
+
+- When an example sheet (e.g., "After," "Expected") exists, identify output cells by structural clues—non-empty values in adjacent columns, not fill color alone. Dump every column in the used range, not just the primary value column. Fill color is unreliable across openpyxl versions; adjacent-column data is deterministic.
+
+- Never trust external data previews (e.g., `spreadsheet_content` hints) as the full truth — they may show only a subset of rows or columns. Always inspect the actual workbook with openpyxl to determine the real structure, headers, and column mappings before writing any transformation logic. After printing all sheets, confirm you've inspected every sheet in `wb.sheetnames` and explicitly reconcile your code's assumptions against observed dimensions (max_row, max_column) before writing any solution logic. This one-pass full inspection prevents assumptions about data layout, header positions, or value formats that would require costly rework later.
+
+- When checking cell content against a target value (e.g., searching for 'X', a number, or a string), load the workbook twice: once normally (`data_only=False`) to see stored formulas, and once with `data_only=True` to see evaluated results. Use the evaluated value from the `data_only` load for matching. Print both the stored formula and the evaluated value for any cell where they differ. Example: `wb_data = openpyxl.load_workbook(path, data_only=True); ws_data = wb_data[sheet_name]; print(f'Stored: {repr(ws.cell(r,c).value)}, Evaluated: {repr(ws_data.cell(r,c).value)}')`
+
+- When the task references criteria cells (e.g., filter values in specific cells like I2, J2), print their exact values, types, and number_formats before designing any filter logic. Also dump the full target write area (headers and all rows) to confirm whether it is empty or contains existing data. After this step, state aloud: the criteria types (string/datetime/number) and whether the target range is populated.
+
+- Complete the full-range inspection (all rows, all columns, all sheets) BEFORE writing any output cells. Map out data blocks, headers, existing values, and empty target cells from this inspection before choosing a computation approach.
+## Writing Output
+
+
+- Before writing to any answer range, print all non-empty cells in that range with `repr(cell.value)`. If cells already contain data, verify them against the task logic. Preserve existing correct values and only fill in missing or incorrect cells. Do not blindly clear the answer range unless the task explicitly requires regenerating all values from scratch.
+
+- Compute values in Python and write the final results directly to cells — never write formula strings (e.g., `=IF(...)`) unless the task explicitly requires storing formulas. Formulas stored as text are not evaluated and cells appear empty to graders.
+- When replacing or regenerating content in a target sheet, clear existing data in the target ranges first before writing new values. Use the answer-range dimensions as guidance for how many rows to clear and fill. After writing, check cells immediately beyond each table's data rows for stray values that the clearing step should have removed.
+- When clearing backgrounds or formatting, use UNCONDITIONAL reset: `cell.fill = PatternFill(fill_type=None)` for every cell in the range. Do NOT gate clearing on existing fill attributes (e.g., `if cell.fill.start_color.rgb`). Apply clearing inside the same loop that writes new values, not in a separate pass.
+
+- When copying rows from a source sheet, preserve ALL style properties from the source cell: font, fill, border, alignment, number_format, and protection. **NEVER assign a source cell's style proxy objects directly** (e.g., `target_cell.font = source_cell.font`) — this causes `TypeError: unhashable type: 'StyleProxy'`. Instead, extract individual properties and create fresh style objects: `target_cell.number_format = source_cell.number_format`; for alignment, construct `openpyxl.styles.Alignment(horizontal=source_cell.alignment.horizontal, vertical=source_cell.alignment.vertical)`; for font, extract name/size/bold/italic individually. Only modify number_format for columns that explicitly need different display formatting. After writing, spot-check that unmodified columns match the source formatting exactly.
+- Before writing computed results to any answer range, explicitly clear every cell in that range (set to None or empty string). This prevents stale values from prior edits or template defaults from contaminating the output. After writing, scan the entire answer range to confirm only intended rows contain non-None values.
+- When implementing conditional logic with multiple rules, decompose each sub-condition into a well-named boolean variable, then apply rules in priority order using if-elif. This makes the logic directly traceable to task instructions and prevents tangled nested conditions.
+
+- When a task asks why a formula does not return a value or describes a displayed-value discrepancy, compute the result in Python and write the literal value — do NOT write a formula string. Load with `data_only=True` to read cached values, compute the intended result, and write it. After writing, confirm `cell.value` is a number/string, not a formula, unless the task explicitly requires formula correction.
+
+- When copying or transforming cell values (e.g., pulling datetimes from one column to another), iterate over rows, check that the source cell value is not None, compute the target value in Python, and assign it directly: `if source_cell.value is not None: target_cell.value = source_cell.value`. This pattern ensures answer ranges contain actual data values (datetime, int, float) rather than formula strings.
+## Verification
+
+
+- After every `wb.save(output_path)`, run `ls -la <output_path>` to confirm the file was written to the exact expected location. Verify the saved file differs from the input file (check modification time or file size) to ensure you are not submitting an unmodified copy.
+- After writing, read back answer cells to confirm they contain actual computed data, not formula text or None. Inspect answer-range cells to ensure they contain data values matching the required dimensions.
+- Iterate the modified range and confirm `cell.fill.patternType` is `None` (or the expected default) for cleared cells. Spot-check at least one cell's value and formatting match expectations.
+
+- After the initial write, load the output workbook and print every cell in the answer range with `repr(cell.value)`, `type(cell.value).__name__`, and `number_format` for key columns. Compare each against the specification. If any value, type, or format deviates, correct the logic, rewrite, and re-inspect until all cells match exactly. Also confirm the answer range is populated and not None. If the range is empty, trace the column indexing immediately. Do not declare completion until this loop passes.
+
+- After writing, verify the output range against the task's `answer_position` (e.g., `A1:D7`). Read back the full target range including rows expected to be empty, and print cell values with coordinates. Confirm the range extends to the specified dimensions — populated rows plus any required empty rows. If the range is shorter than expected, clear or initialize the full target range before writing.
+- After writing, load the output file with `data_only=True` and print every cell in the answer range using a loop that covers all targeted rows and columns — never filter with `if cell.value` or conditional printing that skips None/empty cells. Empty cells are as important as populated ones for confirming the output matches expectations. Confirm answer cells contain computed values (numbers, strings, booleans), not formula strings or `None`. When output involves computed aggregations (counts, sums, groupings), print a summary of the computed values alongside the expected logic. Example: print rows grouped by a key column and verify counts or sums match the intended intervals or thresholds. This catches logic errors before finalizing.
+
+- After writing output, scan the ENTIRE data range (all rows) to verify completeness — not just the first N rows. Count total rows matching each condition and print the count alongside the row numbers where the condition was applied. Compare against the total rows in the sheet to confirm no rows were missed. Also inspect the FULL answer range specified in the task (e.g., H2:H24), printing every cell with coordinates and `repr(value)`. For each cell the task says you must populate, confirm it contains a data value. For cells the task does NOT mention, confirm they remain None/unmodified. If any requested cell is empty or an unintended cell holds data, correct it before saving.
+
+- After every save, re-open the output file and print both cell values AND structural metadata (`ws.max_row`, `ws.max_column`, `ws.dimensions`). Compare these against the answer range from the task instruction (e.g., if the answer range is `A1:D5`, confirm `max_column` is at least 4 and `max_row` is at least 5). If dimensions are smaller than the answer range, the output is incomplete — investigate and fix before declaring completion.
+
+- After writing, scan answer-range cells for formula strings: `if isinstance(cell.value, str) and cell.value.startswith('='): print(f'WARNING: Formula found at {cell.coordinate}: {cell.value}')`. If any formulas are detected, recompute values in Python and rewrite immediately. Do not save until all answer cells contain data values, not formula text.
+
+- When the task lists multiple explicit requirements (e.g., delete a sheet, set a cell value, apply formatting), verify each one after saving: re-load the output, list sheet names to confirm deletions, read target cells to confirm values, and check fill/style on formatted cells. Do not declare completion until every stated requirement is confirmed.
+
+- **Completion gate**: Before declaring TASK_COMPLETE, confirm ALL of: (1) the output file exists at the exact required path with a recent modification time (`ls -la <output_path>`) — if this check fails, STOP and fix the save logic, do not proceed to any other verification, (2) the file size differs from the input workbook, (3) you have loaded the saved output file and printed the full answer range, and (4) the printed values match the task requirements. Never declare completion based solely on a script's success message — always verify the file is on disk with correct contents. If any check fails, fix the issue and re-verify.
+
+- After writing, print every cell in the answer range with value, number_format, and font name in a single verification pass. Example: `for row in ws.iter_rows(min_row=7, max_row=23, min_col=14, max_col=16): for cell in row: print(f'{cell.coordinate}: value={cell.value!r}, fmt={cell.number_format}, font={cell.font.name!r}')` Then spot-check at least one arithmetic relationship (e.g., sum of two columns) against the instruction. Only declare completion after all values, formats, and fonts match the specification.
+
+
+- After saving, run `ls -la <output_path>` and confirm the file exists with a recent modification time. If the file does not exist or has zero size, DO NOT proceed to any other verification step — fix the save logic and re-execute immediately. Only after confirming file existence should you proceed to content verification.
+
+- After saving, load the output workbook and explicitly read back the EXACT answer range specified in the task instructions (e.g., `'final Recon Items'!A1:D5`) using `iter_rows` with explicit `min_row` and `max_row` bounds matching the specification. Print every cell in that range with coordinates and `repr(value)`. Confirm the sheet exists, the range dimensions match, and all required cells contain data. Do not rely solely on a generic "print remaining rows" check — verify the precise range the task names.
+## Common Pitfalls
+
+
+- When filling letter suffixes for URNs (e.g., '5a', '5b', '5f'): parse existing lettered values to set the letter counter correctly. For a pure numeric URN like '5', reset the counter to 0 (next blank gets 'a'). For an already-lettered URN like '5f', extract the letter index (f=6) and set the counter to that index so the next blank continues with 'g'. Do NOT reset the counter to 0 when encountering a lettered URN. After writing, verify that within each numeric URN group, letter suffixes increase strictly (a,b,c,...) with no gaps or repeats.
+
+- When computing balances from columns named "DEDUCTIONS" or "ADDITIONS", pause to map the natural sign direction: a deduction reduces what is owed (makes balance more positive), an addition increases what is owed (makes balance more negative). Write a comment in your script showing the formula mapping (e.g., `new_balance = previous - deductions + additions`) before assigning to cells. Hand-check one row with a non-zero value to confirm the sign, then after writing load with `data_only=True` and print the answer range to verify.
+
+- If openpyxl.load_workbook raises a TypeError about styles (fills, fonts, borders), unzip the xlsx, remove or comment out the offending elements in xl/styles.xml, re-zip, and reload. Do not abandon the file or switch libraries. After fixing, verify the output file exists with `ls -la <output_path>`.
+
+- When deleting or inserting multiple rows, collect row indices first, sort in descending order (highest to lowest), then process in that order. Example for deletions: `for r in sorted(rows_to_delete, reverse=True): ws.delete_rows(r, 1)`. Example for insertions: `for r in range(max_row, min_row - 1, -1): ws.insert_rows(r)`. This prevents index shifting from corrupting subsequent operations.
+
+- When a task says "look for value X in the cells above/below row Y," decide on a scan direction before writing any code and document it in a comment. Prefer scanning from the column header downward, taking the FIRST match that satisfies the condition, unless the instruction explicitly says "closest" or "nearest." After writing the result, verify the answer cell contains a data value (not a formula string) and spot-check the scanned column to confirm the correct match was selected.
+
+- When the task describes a row range (e.g., "rows 14-83") but the graded answer range starts earlier (e.g., E9:M83), inspect the extra rows (9-13) to determine if they need data, clearing, or should remain as-is. After the operation, print the entire answer range to confirm no unintended gaps.
+
+- When deleting rows based on a cell value (e.g., "to be processed"), inspect the actual values first. If they are full-string status codes, use exact string comparison (`str(cell.value).strip().lower() == "to be processed"`), not substring search (`in`). Substring matching risks deleting rows that merely contain the phrase (e.g., "to be processed later"). After deletion, print the deleted row count and spot-check a few remaining rows to confirm no partial matches were wrongly targeted.
+
+- After row deletions, compare `ws.max_row` against the answer-range row bound from the task specification. If the answer range expects rows down to row 9 but `max_row` is now 8, ensure the graded range is still fully populated (e.g., verify row 9 still contains expected content or adjust output). Print the exact cells in the answer range and confirm none are unexpectedly empty.
+
+- When a task instruction describes an operation on rows where a column's values satisfy a condition (e.g., "delete rows where the values in column D sum up to zero"), determine whether the check is per-row or aggregate BEFORE writing code. If the instruction mentions a threshold applied to individual values or describes deleting "rows where" a condition holds, interpret it as a per-row check: each row is evaluated independently against the condition (e.g., `abs(row_value) < threshold`). Do NOT compute a sum across all rows and apply a single aggregate decision. After writing your logic, re-read the instruction and state aloud the condition that determines deletion for a single row; if your code uses a different condition, revise it before running.

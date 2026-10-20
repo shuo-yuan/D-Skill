@@ -1,0 +1,92 @@
+D-Skill
+Copyright (c) 2026 The D-Skill Authors
+
+D-Skill is released under the MIT License (see LICENSE). The third-party
+components below keep their own licenses.
+
+1. Trace2Skill
+   https://github.com/Qwen-Applications/Trace2Skill
+   License: Apache License 2.0 (full text: third_party/trace2skill/LICENSE)
+   Files:
+   - third_party/trace2skill/ (except skills/skill-creator/, see 2)
+   - envs/spreadsheetbench/evaluate_with_official.py
+   - envs/spreadsheetbench/spreadsheetbench_support.py
+   - envs/spreadsheetbench/spreadsheet_agent/
+   Our changes: import paths, reasoning and token-usage logging, an LLM
+   timeout override, and the SpreadsheetBench evaluation (per-task scoring,
+   cell-range parsing, and dropping an optional external comparator and a
+   multi-seed mode), withholding secret-named environment variables from
+   the agent's bash tool, and removing the unused legacy system-prompt
+   path. third_party/trace2skill/README.md describes the
+   changes in that folder. The modified files are:
+   - envs/spreadsheetbench/evaluate_with_official.py
+   - envs/spreadsheetbench/spreadsheet_agent/agents/base.py
+   - envs/spreadsheetbench/spreadsheet_agent/agents/cli_only_agent.py
+   - envs/spreadsheetbench/spreadsheet_agent/agents/cli_skill_preloaded_agent.py
+   - envs/spreadsheetbench/spreadsheet_agent/tools/bash.py
+   - third_party/trace2skill/analysis/error_analysis_agent.py
+   - third_party/trace2skill/analysis/evaluate_output.py
+   - third_party/trace2skill/analysis/run_error_analysis.py
+   - third_party/trace2skill/skill_evolver/run_parallel_skill_evolution.py
+   - third_party/trace2skill/skill_evolver/skill_evolving_agent.py
+   - third_party/trace2skill/src/react_agent/agent.py
+   - third_party/trace2skill/src/react_agent/models.py
+
+2. Anthropic skill-creator skill (validator script)
+   https://github.com/anthropics/skills/tree/main/skills/skill-creator
+   License: Apache License 2.0 (same text as third_party/trace2skill/LICENSE)
+   Files:
+   - third_party/trace2skill/skills/skill-creator/scripts/quick_validate.py
+
+3. SkillOpt
+   https://github.com/microsoft/SkillOpt (commit 0f76ab4)
+   License: MIT, Copyright (c) 2026 Microsoft Corporation
+   (full text: third_party/skillopt/LICENSE)
+   Files:
+   - third_party/skillopt/ (a patch to SkillOpt, and adapters and configs
+     written against its interfaces)
+   - envs/spreadsheetbench/assets/skillopt_pkg/ and skillopt_pkg_proc/
+     (the teacher skill for SpreadsheetBench: SkillOpt's
+     ckpt/spreadsheetbench/gpt5.5_skill.md at commit 0f76ab4, with a
+     front-matter header added; skillopt_pkg_proc also
+     adds a working-protocol section)
+   - envs/alfworld/assets/skillopt_teacher/SKILL.md (the teacher skill for
+     ALFWorld: SkillOpt's ckpt/alfworld/gpt5.5_skill.md at commit 0f76ab4,
+     unchanged)
+   - envs/alfworld/vendor/ (SkillOpt's ALFWorld environment runtime, copied
+     so that ALFWorld runs without a SkillOpt checkout). builder.py is
+     extracted from skillopt/envs/alfworld/rollout.py. We changed import
+     paths in builder.py and env_manager.py, the config path in builder.py,
+     and the template loading in alfworld_prompts.py. The other files are
+     unchanged.
+
+4. SkillRL (vendored inside SkillOpt)
+   https://github.com/NTU-LANTERN/SkillRL
+   License: Apache License 2.0 (same text as third_party/trace2skill/LICENSE)
+   Files:
+   - envs/alfworld/vendor/ except builder.py
+
+5. SpreadsheetBench
+   https://github.com/RUCKBReasoning/SpreadsheetBench
+   License: CC BY-SA 4.0 (https://creativecommons.org/licenses/by-sa/4.0/)
+   Files:
+   - envs/spreadsheetbench/data/ (benchmark data, unmodified)
+   - envs/spreadsheetbench/spreadsheetbench_support.py and
+     third_party/trace2skill/analysis/evaluate_output.py (the cell-comparison
+     functions follow SpreadsheetBench's official evaluation)
+
+6. Lichess puzzle database
+   https://database.lichess.org/
+   License: CC0 1.0
+   Files:
+   - envs/chess/data/ (puzzle subsets drawn from the database)
+
+7. ALFWorld
+   https://github.com/alfworld/alfworld
+   License: MIT, Copyright (c) 2020 Mohit Shridhar and others
+   Files:
+   - envs/alfworld/data/alfworld_trainval_items.json and
+     alfworld_test_items.json (task lists that name ALFWorld game files:
+     SkillOpt's data/alfworld_path_split at commit 0f76ab4, train+val and
+     test; the train+val list adds a `question` field; the game data itself
+     is downloaded separately)

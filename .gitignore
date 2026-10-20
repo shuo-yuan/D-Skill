@@ -1,0 +1,26 @@
+__pycache__/
+*.pyc
+.venv/
+venv/
+.claude/
+**/_hd_*.json
+runs/
+
+# secrets: API keys and credential files (keep only the placeholder example)
+openai.env*
+!openai.env.example
+*.env
+.env
+**/auth.json
+**/codex_home/
+config/llm_api.json
+*.pem
+.netrc
+.envrc
+
+# large or regenerable artifacts
+/vendor/
+wandb/
+parse_failures*/
+envs/chess/data/lichess_puzzles/lichess_db_puzzle.csv.zst
+envs/alfworld/data/alfworld_data/
