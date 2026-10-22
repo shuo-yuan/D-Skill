@@ -196,7 +196,7 @@ Output format (exactly this structure, failure items first):
 """
 
 # chess_commit_check: PROMPT_CHESS plus commitment and abandonment dimensions.
-# for Haiku -> Qwen, the experiments are with text-tag harnesss, so the prompt is written to encourage commit and abandon checks
+# for Haiku -> Qwen, the experiments are with text-tag harness, so the prompt is written to encourage commit and abandon checks
 PROMPT_CHESS_COMMIT_CHECK = _rep(
     PROMPT_CHESS,
     "after the opponent's reply; ",

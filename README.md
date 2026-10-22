@@ -86,14 +86,17 @@ profile and saves each episode's session in `~/.claude/projects`, which `envs/ch
 traces; `HD_CC_CONFIG_DIR` selects another profile. Each run writes a folder under `runs/` (gitignored) with a
 `results.jsonl`. All reported scores use each benchmark's
 official scoring: the official SpreadsheetBench evaluation (saved cell values, no formula recalculation), the
-ALFWorld environment's success signal, and the puzzle's solution line for chess.
+ALFWorld environment's success signal, and the puzzle's solution line for chess. The chess task line in
+`envs/chess/assets/tool_trust.md` calls the tools "an exact chess engine" in the sense of python-chess move rules; no
+tool searches or evaluates positions.
 
 ## Distill a skill
 
 The paper's traces and analyses are not released; distilling again regenerates them. First run the teacher and the
 student with the runners above on the training tasks: SpreadsheetBench `split_shuffled42.json` `distill` ids
 (`--split distill`; 99 of its 200 `train` ids), ALFWorld `envs/alfworld/data/alfworld_trainval_items.json`, chess
-`envs/chess/data/lichess_puzzles/puzzles_train_cc100.json`.
+`envs/chess/data/lichess_puzzles/puzzles_train_cc100.json`. The paper's ALFWorld training traces used `--max-steps 30`
+(50 for the Luna student).
 Teachers carry a skill: `envs/spreadsheetbench/assets/skillopt_pkg` (DeepSeek) or `skillopt_pkg_proc` (Terra), and
 `envs/alfworld/assets/skillopt_teacher/SKILL.md`; the chess teachers run without one. SpreadsheetBench students run
 with the empty `envs/spreadsheetbench/assets/skeleton`. For ALFWorld, stage the teacher traces with
